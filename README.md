@@ -15,4 +15,5 @@ Help <br />
 After 6 hours:
 
 ![278979858_358377349602423_3259495700904402367_n](https://user-images.githubusercontent.com/63902542/166149820-1ac509f2-2f9d-4953-8294-dbcf0303fa03.png)
-![278921552_300689248885900_694158312832667520_n](https://user-images.githubusercontent.com/63902542/166149823-64402c09-3e88-4639-b447-a13cf492d036.png)
+
+![image](https://user-images.githubusercontent.com/63902542/166149856-d7072b28-66d7-427f-b373-05323dfd56dc.png)
