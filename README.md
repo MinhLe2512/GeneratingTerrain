@@ -10,3 +10,4 @@ http://paulbourke.net/geometry/polygonise/ <br />
 # Day 2:
 Help <br />
 ![image](https://user-images.githubusercontent.com/63902542/166137308-d3052186-26ec-48fe-b0de-8c00bd86c344.png)
+![image](https://user-images.githubusercontent.com/63902542/166137618-e25da6e6-0ffe-4dd3-897d-69f05cfbe2af.png)
