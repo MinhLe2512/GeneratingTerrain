@@ -6,8 +6,12 @@ public class MarchingCube : MonoBehaviour
 {
     private List<Vector3> vertices;
     private List<int> triangles;
-    private int configIndex = -1;
 
+    [SerializeField]private float surfaceHeight = 0.5f;
+
+    private float[,,] terrainField;
+
+    [SerializeField] private int width, height;
     public void Clear() {
         vertices.Clear();
         triangles.Clear();
@@ -19,9 +23,36 @@ public class MarchingCube : MonoBehaviour
         vertices = new List<Vector3>();
         triangles = new List<int>();
 
+        terrainField = new float[width + 1, height + 1, width + 1];
         meshFilter = GetComponent<MeshFilter>();
+
+        /*Clear();
+        PopulateCubes();
+
+        CreateMeshData();
+
+        BuildMesh();*/
     }
 
+    private void CreateMeshData() {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                for (int z = 0; z < width; z++)
+                {
+                    float[] cubes = new float[8];
+                    for (int i = 0; i < 8; i++)
+                    {
+                        Vector3Int position = verticesTable[i] + new Vector3Int(x, y, z);
+
+                        cubes[i] = terrainField[position.x, position.y, position.z];
+                    }
+                    MarchCubes(new Vector3(x, y, z), cubes);
+                }
+            }
+        }
+    }
     public void BuildMesh() {
         Mesh mesh = new Mesh();
         mesh.vertices = vertices.ToArray();
@@ -30,10 +61,45 @@ public class MarchingCube : MonoBehaviour
         meshFilter.mesh = mesh;
     }
 
-    public void MarchCubes(Vector3 position, int configIndex)
+    public void PopulateCubes()
     {
+        for (int x = 0; x < width; x++) { 
+            for (int y = 0; y < height; y++) { 
+                for (int z = 0; z < width; z++) {
+                    float thisHeight = height * 1.0f * (Mathf.PerlinNoise((float)x / 16f * 1.5f + 0.001f,
+                        (float)z / 16f * 1.5f + 0.001f));
+
+                    //Calculate height of Cube
+                    float point = 0;
+                    if (y <= thisHeight - surfaceHeight)
+                        point = 0f;
+                    else if (y > thisHeight + surfaceHeight)
+                        point = 1f;
+                    else if (y > thisHeight)
+                        point = y * 1.0f - thisHeight;
+                    else
+                        point = thisHeight - y * 1.0f;
+
+                    terrainField[x, y, z] = point;
+                }
+            }
+        }
+    }
+
+    private int GetEdgeConfigIndex(float[] cubes) {
+        int configIndex = 0;
+        for(int i = 0; i < 8; i++) {
+            if (cubes[i] > surfaceHeight)
+                configIndex |= 1 << i;
+        }
+        return configIndex;
+    }
+
+    public void MarchCubes(Vector3 position, float[] cubes)
+    {
+        int configIndex = GetEdgeConfigIndex(cubes);
         if (configIndex == 0 || configIndex == 255)
-            return;
+             return;
 
         int edgeIndex = 0;
         //We have 16 vertices -> No more than 5 triangle
@@ -43,12 +109,12 @@ public class MarchingCube : MonoBehaviour
             {
                 int indice = triangleTable[configIndex, edgeIndex];
 
-                if (indice == -1)
+                if (indice == -1) 
                     break;
 
 
-                Vector3 v1 = position + edgeTable[edgeIndex, 0];
-                Vector3 v2 = position + edgeTable[edgeIndex, 1];
+                Vector3 v1 = position + edgeTable[indice, 0];
+                Vector3 v2 = position + edgeTable[indice, 1];
 
                 Vector3 v12 = v1 + v2 / 2f;
 
@@ -63,33 +129,36 @@ public class MarchingCube : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) {
-            configIndex++;
+       if (Input.GetMouseButtonDown(0)) {
             Clear();
-            MarchCubes(Vector3.zero, configIndex);
+            PopulateCubes();
+
+            CreateMeshData();
+
             BuildMesh();
         }
     }
 
-    private Vector3Int[,] verticesTable = {
-        { new Vector3Int(0, 0, 0), new Vector3Int(0, 1, 0), new Vector3Int(0, 0, 1),
-            new Vector3Int(0, 1, 1), new Vector3Int(1, 0, 0), new Vector3Int(1, 0, 1),
-            new Vector3Int(1, 1, 0), new Vector3Int(1, 1, 1) }
+    private Vector3Int[] verticesTable = {
+            new Vector3Int(0, 0, 0), new Vector3Int(1, 0, 0),
+            new Vector3Int(1, 1, 0), new Vector3Int(0, 1, 0),
+            new Vector3Int(0, 0, 1), new Vector3Int(1, 0, 1),
+            new Vector3Int(1, 1, 1), new Vector3Int(0, 1, 1) 
     };
 
     private Vector3[,] edgeTable = new Vector3[12, 2] {
-        { new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 1f) }, 
+        { new Vector3(0f, 0f, 0f), new Vector3(1f, 0f, 0f) }, 
+        { new Vector3(1f, 0f, 0f), new Vector3(1f, 1f, 0f) },
+        { new Vector3(0f, 1f, 0f), new Vector3(1f, 1f, 0f) },
         { new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f) },
-        { new Vector3(0f, 1f, 0f), new Vector3(0f, 1f, 1f) },
-        { new Vector3(0f, 1f, 1f), new Vector3(1f, 1f, 1f) },
         { new Vector3(0f, 0f, 1f), new Vector3(1f, 0f, 1f) },
         { new Vector3(1f, 0f, 1f), new Vector3(1f, 1f, 1f) },
-        { new Vector3(1f, 0f, 0f), new Vector3(1f, 0f, 1f) },
-        { new Vector3(1f, 0f, 0f), new Vector3(1f, 1f, 0f) },
-        { new Vector3(1f, 1f, 0f), new Vector3(1f, 1f, 1f) },
-        { new Vector3(0f, 0f, 0f), new Vector3(1f, 0f, 0f)},
-        { new Vector3(0f, 1f, 0f), new Vector3(1f, 1f, 0f)}, 
-        { new Vector3(0f, 1f, 1f), new Vector3(0f, 0f, 1f) }
+        { new Vector3(0f, 1f, 1f), new Vector3(1f, 1f, 1f) },
+        { new Vector3(0f, 0f, 1f), new Vector3(0f, 1f, 1f) },
+        { new Vector3(0f, 0f, 0f), new Vector3(0f, 0f, 1f) },
+        { new Vector3(1f, 0f, 0f), new Vector3(1f, 0f, 1f)},
+        { new Vector3(1f, 1f, 0f), new Vector3(1f, 1f, 1f)}, 
+        { new Vector3(0f, 1f, 0f), new Vector3(0f, 1f, 1f) }
     };
 
     private int[,] triangleTable = new int[,]{
