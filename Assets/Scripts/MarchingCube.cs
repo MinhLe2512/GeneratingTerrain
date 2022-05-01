@@ -6,28 +6,69 @@ public class MarchingCube : MonoBehaviour
 {
     private List<Vector3> vertices;
     private List<int> triangles;
+    private int configIndex = -1;
 
     public void Clear() {
         vertices.Clear();
         triangles.Clear();
     }
 
-    Mesh mesh;
+    MeshFilter meshFilter;
     private void Awake()
     {
         vertices = new List<Vector3>();
         triangles = new List<int>();
 
-        mesh = GetComponent<Mesh>();
+        meshFilter = GetComponent<MeshFilter>();
+    }
+
+    public void BuildMesh() {
+        Mesh mesh = new Mesh();
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
+        meshFilter.mesh = mesh;
+    }
+
+    public void MarchCubes(Vector3 position, int configIndex)
+    {
+        if (configIndex == 0 || configIndex == 255)
+            return;
+
+        int edgeIndex = 0;
+        //We have 16 vertices -> No more than 5 triangle
+        for (int i = 0; i < 5; i++)
+        {
+            for (int p = 0; p < 3; p++)
+            {
+                int indice = triangleTable[configIndex, edgeIndex];
+
+                if (indice == -1)
+                    break;
+
+
+                Vector3 v1 = position + edgeTable[edgeIndex, 0];
+                Vector3 v2 = position + edgeTable[edgeIndex, 1];
+
+                Vector3 v12 = v1 + v2 / 2f;
+
+                vertices.Add(v12);
+                triangles.Add(vertices.Count - 1);
+
+                edgeIndex++;
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetMouseButtonDown(0)) {
+            configIndex++;
+            Clear();
+            MarchCubes(Vector3.zero, configIndex);
+            BuildMesh();
+        }
     }
 
     private Vector3Int[,] verticesTable = {
