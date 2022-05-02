@@ -17,3 +17,8 @@ After 6 hours:
 ![278979858_358377349602423_3259495700904402367_n](https://user-images.githubusercontent.com/63902542/166149820-1ac509f2-2f9d-4953-8294-dbcf0303fa03.png)
 
 ![image](https://user-images.githubusercontent.com/63902542/166149856-d7072b28-66d7-427f-b373-05323dfd56dc.png)
+
+# Day 3:
+Adding textures:
+
+![278706477_385124540295520_6537358114242619152_n](https://user-images.githubusercontent.com/63902542/166245089-fc8728ec-3ce2-4bc6-aac2-de31bb3443d6.png)
