@@ -24,6 +24,8 @@ Adding textures:
 ![278706477_385124540295520_6537358114242619152_n](https://user-images.githubusercontent.com/63902542/166245089-fc8728ec-3ce2-4bc6-aac2-de31bb3443d6.png)
 
 # Day 4:
-Generate terrain map using Perlin noise:
+Generate terrain map using Perlin noise: <br />
 ![image](https://user-images.githubusercontent.com/63902542/166480155-8fcc88b1-ac18-4480-8da9-77d16c86c0f1.png)
+![image](https://user-images.githubusercontent.com/63902542/166480809-3de09495-2094-41a8-89cd-52be1e03de30.png)
+
 
