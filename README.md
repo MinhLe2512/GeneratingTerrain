@@ -28,4 +28,8 @@ Generate terrain map using Perlin noise: <br />
 ![image](https://user-images.githubusercontent.com/63902542/166480155-8fcc88b1-ac18-4480-8da9-77d16c86c0f1.png)
 ![image](https://user-images.githubusercontent.com/63902542/166480809-3de09495-2094-41a8-89cd-52be1e03de30.png)
 
+# Day 5
+![image](https://user-images.githubusercontent.com/63902542/166721138-df6f362c-35f0-47fc-a625-46711c4736ed.png)
+
+
 
