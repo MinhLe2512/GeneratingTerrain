@@ -5,8 +5,10 @@ using UnityEngine;
 public static class MeshGenerator
 {
 	public static MeshData GenerateMeshData(float[,] heightMap, float heightMultiplier,
-		AnimationCurve heightCurve, int levelOfDetails)
+		AnimationCurve _heightCurve, int levelOfDetails)
 	{
+		AnimationCurve heightCurve = new AnimationCurve(_heightCurve.keys);
+
 		int width = heightMap.GetLength(0);
 		int height = heightMap.GetLength(1);
 		float topLeftX = (width - 1) / -2f;
@@ -47,8 +49,7 @@ public static class MeshGenerator
 	}
 }
 
-public class MeshData
-{
+public class MeshData {
 	public Vector3[] vertices;
 	public int[] triangles;
 	public Vector2[] uvs;

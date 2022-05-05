@@ -13,13 +13,13 @@ public class WorldGeneratorEditor : Editor
         //If any value is change
         if (DrawDefaultInspector()) { 
             if(world.autoUpdate) {
-                world.GenerateWorld();
+                world.DrawInEditor();
             }       
         }
 
         //Add button to inspector
         if (GUILayout.Button("Generate")) {
-            world.GenerateWorld();
+            world.DrawInEditor();
         }
     }
 }
