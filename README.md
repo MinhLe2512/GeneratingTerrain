@@ -35,6 +35,7 @@ Generate terrain map using Perlin noise: <br />
 Kinda boring but i'll make it up tmr
 ![image](https://user-images.githubusercontent.com/63902542/166968427-1be57367-1daf-4685-a9c0-83062c6c8f0a.png)
 
-
+# Day 7: 
+Delay due to some errands
 
 
